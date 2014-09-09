@@ -41,6 +41,19 @@ $input = $app->input;
                     </div>
                     <div class="span3">
                         <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+                        <select multiple="multiple" id="ticket-list">
+                            <?php foreach($this->eventbriteResponse as $event): ?>
+                                <optgroup label="<?php echo trim($event->name->text) . ': Tickets'; ?>">
+                                    <?php if ($event->ticket_classes): ?>
+                                        <?php foreach ($event->ticket_classes as $eventTicket): ?>
+                                            <option value="<?php echo $eventTicket->id; ?>">
+                                                <?php echo trim($eventTicket->name); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </optgroup>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -49,6 +62,16 @@ $input = $app->input;
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="return" value="<?php echo $input->getCmd('return'); ?>" />
         <?php echo JHtml::_('form.token'); ?>
+
+        <?php // var_dump($this->eventbriteResponse); ?>
+
+
+
+        <script type="text/javascript">
+            jQuery(document).ready(function()  {
+                jQuery('ticket-list').multipleSelect();
+            });
+        </script>
 
     </div>
 </form>

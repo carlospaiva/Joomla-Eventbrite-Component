@@ -32,6 +32,10 @@ class EventbriteModelEventbrite extends JModelAdmin
     public $typeAlias = 'com_eventbrite.eventbrite';
 
 
+    /*
+     * Eventbrite base URL
+     */
+    public $eventbriteBaseURL = 'https://www.eventbriteapi.com';
 
     /**
      * Returns a Table object, always creating it.
@@ -74,7 +78,6 @@ class EventbriteModelEventbrite extends JModelAdmin
     {
 
         $form = $this->loadForm('com_eventbrite.eventbrite', 'eventbrite', array('control' => 'jform', 'load_data' => $loadData));
-
 
 
         if (empty($form))
@@ -127,6 +130,48 @@ class EventbriteModelEventbrite extends JModelAdmin
 
         // Increment the content version number.
         $table->version++;
+    }
+
+    public function getEventbriteEventsByOrganizer()
+    {
+        $params = JComponentHelper::getParams('com_eventbrite');
+
+        $personalToken = $params->get('personal_oauth');
+
+        $organizerId = 'organizer.id=' . $params->get('organizer_id');
+
+        $getEvents = new JHttp();
+
+        $headers = array('Authorization' => 'Bearer ' . $personalToken);
+
+        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/search?' . $organizerId, $headers);
+
+        if ($result->code != 200)
+        {
+            // there was an error
+            return false;
+        }
+
+        return (json_decode($result->body));
+    }
+
+    public function getEventList()
+    {
+        $eventbriteResponse = $this->getEventbriteEventsByOrganizer();
+
+        $eventBriteList = $eventbriteResponse->events;
+
+        return $eventBriteList;
+
+    }
+
+    public function setupEventbrite()
+    {
+        $params = JComponentHelper::getParams('com_eventbrite');
+
+        $eventbrite = new EventBriteConnector($params->get('oauth_secret'), $params->get('personal_oauth'), $params->get('anonymous_oauth'));
+
+        return $eventbrite;
     }
 
 }

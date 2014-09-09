@@ -1,0 +1,48 @@
+<config>
+    <fieldset
+            name="eventbrite"
+            label="JGLOBAL_ARTICLES"
+            description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_DESC">
+
+        <field  name="client_secret"
+                type="text"
+                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_CLIENT_SECRET_KEY_LABEL"
+                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_CLIENT_SECRET_KEY_DESC"
+                default=""
+                />
+
+        <field  name="personal_oauth"
+                type="text"
+                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_PERSONAL_OATH_KEY_LABEL"
+                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_PERSONAL_OATH_KEY_DESC"
+                default=""
+                />
+
+        <field  name="anonymous_oauth"
+                type="text"
+                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_ANONYMOUS_OATH_KEY_LABEL"
+                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_ANONYMOUS_OATH_KEY_DESC"
+                default=""
+                />
+
+        <field  name="app_key"
+                type="text"
+                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_APP_KEY_LABEL"
+                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_APP_KEY_DESC"
+                default=""
+                />
+
+        <field  name="app_key"
+                type="text"
+                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_APP_KEY_LABEL"
+                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_APP_KEY_DESC"
+                default=""
+                />
+        <field name="organizer_id"
+               type="text"
+               label="COM_EVENTBRITE_CONFIG_EVENTBRITE_ORGANIZER_ID_LABEL"
+               description="COM_EVENTBRITE_CONFIG_EVENTBRITE_ORGANIZER_ID_DESC"
+               default=""
+               />
+    </fieldset>
+</config>

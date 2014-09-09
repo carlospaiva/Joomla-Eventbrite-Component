@@ -22,6 +22,8 @@ class EventbriteViewEventbrite extends JViewLegacy
 
     protected $state;
 
+    protected $eventbriteResponse;
+
     /**
      * Display the view
      */
@@ -37,6 +39,14 @@ class EventbriteViewEventbrite extends JViewLegacy
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
+
+        $doc = JFactory::getDocument();
+
+        $doc->addScript(JUri::root() . 'media/com_eventbrite/multiple-select-master/jquery.multiple.select.js');
+        $doc->addStyleSheet(JUri::root() . 'media/com_eventbrite/multiple-select-master/multiple-select.css');
+
+        $this->eventbriteResponse = $this->get('EventList');
+
 
         $this->addToolbar();
         parent::display($tpl);
