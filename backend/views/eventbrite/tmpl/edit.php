@@ -41,6 +41,10 @@ $input = $app->input;
                     </div>
                     <div class="span3">
                         <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+
+                        <?php echo $this->form->getInput('eventbrite_ids'); ?>
+
+                        <? /*
                         <select multiple="multiple" id="ticket-list">
                             <?php foreach($this->eventbriteResponse as $event): ?>
                                 <optgroup label="<?php echo trim($event->name->text) . ': Tickets'; ?>">
@@ -54,6 +58,8 @@ $input = $app->input;
                                 </optgroup>
                             <?php endforeach; ?>
                         </select>
+                        */
+                        ?>
                     </div>
                 </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -69,7 +75,7 @@ $input = $app->input;
 
         <script type="text/javascript">
             jQuery(document).ready(function()  {
-                jQuery('ticket-list').multipleSelect();
+
             });
         </script>
 

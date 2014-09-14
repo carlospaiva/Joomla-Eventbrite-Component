@@ -31,12 +31,6 @@ class EventbriteModelEventbrite extends JModelAdmin
      */
     public $typeAlias = 'com_eventbrite.eventbrite';
 
-
-    /*
-     * Eventbrite base URL
-     */
-    public $eventbriteBaseURL = 'https://www.eventbriteapi.com';
-
     /**
      * Returns a Table object, always creating it.
      *
@@ -132,46 +126,27 @@ class EventbriteModelEventbrite extends JModelAdmin
         $table->version++;
     }
 
-    public function getEventbriteEventsByOrganizer()
+    /*
+     * Overrides save function so we can set custom registry
+     */
+
+    public function save($data)
     {
-        $params = JComponentHelper::getParams('com_eventbrite');
-
-        $personalToken = $params->get('personal_oauth');
-
-        $organizerId = 'organizer.id=' . $params->get('organizer_id');
-
-        $getEvents = new JHttp();
-
-        $headers = array('Authorization' => 'Bearer ' . $personalToken);
-
-        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/search?' . $organizerId, $headers);
-
-        if ($result->code != 200)
+        /*
+         * To be able to save data as a string
+         * we need to load into JRegistry first
+         */
+        if (isset($data['eventbrite_ids']))
         {
-            // there was an error
-            return false;
+            $evenbriteIds = new JRegistry;
+            $evenbriteIds->loadArray($data['eventbrite_ids']);
+
+            $data['eventbrite_ids'] = (string) $evenbriteIds;
         }
 
-        return (json_decode($result->body));
-    }
+        parent::save($data);
 
-    public function getEventList()
-    {
-        $eventbriteResponse = $this->getEventbriteEventsByOrganizer();
-
-        $eventBriteList = $eventbriteResponse->events;
-
-        return $eventBriteList;
-
-    }
-
-    public function setupEventbrite()
-    {
-        $params = JComponentHelper::getParams('com_eventbrite');
-
-        $eventbrite = new EventBriteConnector($params->get('oauth_secret'), $params->get('personal_oauth'), $params->get('anonymous_oauth'));
-
-        return $eventbrite;
+        return true;
     }
 
 }

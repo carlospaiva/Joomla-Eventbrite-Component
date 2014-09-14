@@ -31,4 +31,8 @@
     <field name="description" type="editor"
            label="COM_EVENTBRITE_FIELD_ARTICLETEXT_LABEL" description="COM_EVENTBRITE_FIELD_ARTICLETEXT_DESC"
            filter="JComponentHelper::filterText" buttons="true" />
+
+    <field name="eventbrite_ids" type="list" label="COM_EVENTBRITE_FIELD__EVENTBRITE_IDS_LABEL"
+           description="COM_EVENTBRITE_FIELD__EVENTBRITE_IDS_DESC"   placeholder="Loading..." multiple="true">
+    </field>
 </form>

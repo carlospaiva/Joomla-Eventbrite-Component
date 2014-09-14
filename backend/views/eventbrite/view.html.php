@@ -40,12 +40,11 @@ class EventbriteViewEventbrite extends JViewLegacy
             return false;
         }
 
-        $doc = JFactory::getDocument();
+        JHtml::script('media/jui/js/chosen.jquery.min.js', true);
+        JHtml::script(JUri::root() . 'media/com_eventbrite/js/eventbrite.js', true);
 
-        $doc->addScript(JUri::root() . 'media/com_eventbrite/multiple-select-master/jquery.multiple.select.js');
-        $doc->addStyleSheet(JUri::root() . 'media/com_eventbrite/multiple-select-master/multiple-select.css');
+        $app = JFactory::getApplication();
 
-        $this->eventbriteResponse = $this->get('EventList');
 
 
         $this->addToolbar();
