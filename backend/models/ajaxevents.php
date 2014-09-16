@@ -83,23 +83,10 @@ class EventbriteModelAjaxevents extends JModelList
 
         foreach($response->events as $event)
         {
-            $eventTicketList = array();
-
-            if (count($event->ticket_classes))
-            {
-                foreach ($event->ticket_classes as $eventTicket)
-                {
-                    $ticket = new Stdclass;
-                    $ticket->id = $eventTicket->id;
-                    $ticket->name = $eventTicket->name;
-                    $eventTicketList[] = $ticket;
-                }
-            }
 
             $eventDetails = new stdClass;
             $eventDetails->name = $event->name->text;
             $eventDetails->id = $event->id;
-            $eventDetails->tickets = $eventTicketList;
 
             $eventList[] = $eventDetails;
         }

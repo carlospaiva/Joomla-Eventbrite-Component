@@ -8,23 +8,9 @@ jQuery(document).ready(function($) {
         type: "GET",
         dataType: "json",
         success: function(data) {
-            console.log('success');
-
-            eventList = data;
-
-            console.log(data.length);
-
             selectList = $('#jform_eventbrite_ids');
-
-            markup = '';
-
             $.each(data, function(){
-
-                markup = markup + '<option value="' + this.id + '">' + this.name + '</option>';
-
-                selectList.append(markup);
-
-                //console.log(this);
+                selectList.append( '<option value="' + this.id + '">' + this.name + '</option>');
             });
 
             // console.log($("#jform_eventbrite_ids_chzn").trigger("liszt:updated"));
