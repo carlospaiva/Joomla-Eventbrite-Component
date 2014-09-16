@@ -2,33 +2,30 @@
 /**
  * @Author  Chad Windnagle
  * @Project eventbrite
- * Date: 9/7/14
+ * Date: 9/15/14
  */
 
 defined('_JEXEC') or die;
 
 /**
- * View class for a list of articles.
+ * View to edit an article.
  *
  * @package     Joomla.Administrator
  * @subpackage  com_content
  * @since       1.6
  */
-class EventbriteViewEventbrite extends JViewLegacy
+class EventbriteViewAjaxevents extends JViewLegacy
 {
     protected $item;
 
-    public function display($tpl = null)
+    function display($tpl = null)
     {
         $this->item = $this->get('Item');
-
-        JHtml::script(JUri::root() . 'media/com_eventbrite/js/eventbrite_fe.js', true);
 
         // Check for errors.
         if (count($errors = $this->get('Errors')))
         {
             JError::raiseError(500, implode("\n", $errors));
-
             return false;
         }
 

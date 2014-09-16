@@ -41,11 +41,7 @@ class EventbriteViewEventbrite extends JViewLegacy
         }
 
         JHtml::script('media/jui/js/chosen.jquery.min.js', true);
-        JHtml::script(JUri::root() . 'media/com_eventbrite/js/eventbrite.js', true);
-
-        $app = JFactory::getApplication();
-
-
+        JHtml::script(JUri::root() . 'media/com_eventbrite/js/eventbrite_be.js', true);
 
         $this->addToolbar();
         parent::display($tpl);

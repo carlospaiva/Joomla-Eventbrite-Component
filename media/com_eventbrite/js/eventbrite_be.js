@@ -1,5 +1,4 @@
 jQuery(document).ready(function($) {
-    console.log('hello world');
 
     $("#jform_eventbrite_ids").chosen();
 
@@ -20,13 +19,8 @@ jQuery(document).ready(function($) {
             markup = '';
 
             $.each(data, function(){
-                markup = '<optgroup value="' + this.id + '" label="' + this.name  + '">';
 
-                $.each(this.tickets, function(){
-                   markup = markup + '<option value="' + this.id + '">' + this.name + '</option>';
-                });
-
-                markup = markup + '</optgroup>';
+                markup = markup + '<option value="' + this.id + '">' + this.name + '</option>';
 
                 selectList.append(markup);
 
