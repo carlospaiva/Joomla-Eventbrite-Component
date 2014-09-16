@@ -17,17 +17,25 @@ defined('_JEXEC') or die;
  */
 class EventbriteModelAjaxevents extends JModelItem
 {
+
+    protected $_item;
     /*
     * Eventbrite base URL
     */
     public $eventbriteBaseURL = 'https://www.eventbriteapi.com';
 
+
+    /*
+     * Build the item list out
+     */
     public function getItem()
     {
+        // create new jregistry object
         $eventRegistry = new JRegistry();
 
         $eventRegistry->loadString($this->getEventBriteIds());
 
+        // flag for a loop
         $validEvent = true;
         $eventRegistryIterator = 0;
 
@@ -51,12 +59,14 @@ class EventbriteModelAjaxevents extends JModelItem
 
             // get our remaining tickets for this event
             $ticketsRemaining   = $this->getTicketsRemaining($eventDetails->ticket_classes, $eventDetails->capacity);
+
+            // get highest lowest price range
             $ticketPriceRange = $this->getTicketPriceRange($eventDetails->ticket_classes);
 
             // build a new object so we can json_encode
             $event = new stdClass();
 
-            $event->name                = $eventDetails->name->text;
+            $event->name                = 'Starts at ' . $eventDetails->venue->name;
             $event->link                = $eventDetails->url;
             $event->tickets_remaining   = $ticketsRemaining;
             $event->capacity            = $eventDetails->capacity;
@@ -69,10 +79,36 @@ class EventbriteModelAjaxevents extends JModelItem
             $eventRegistryIterator++;
         }
 
+        // return array of all events as a json string
         return json_encode($eventList);
     }
 
+    /*
+     * Get the eventbrite id list from the _item property
+     */
+
     public function getEventBriteIds()
+    {
+        // check that the item is set
+        if (!$this->_item)
+        {
+            // if not set call the query to set it
+            $this->_getItem();
+        }
+
+        $eventbriteIds = $this->_item->eventbrite_ids;
+
+        // return event ids as string - use JRegistry to parse
+        return $eventbriteIds;
+    }
+
+    /*
+     * Get the item with a query
+     * Set the item property
+     * Use this to prevent multiple queries for different columns
+     */
+
+    protected function _getItem()
     {
         $app = JFactory::getApplication();
 
@@ -80,17 +116,19 @@ class EventbriteModelAjaxevents extends JModelItem
 
         $db = $this->getDbo();
         $query = $db->getQuery(true)
-            ->select('eventbrite_ids')
-            ->from('#__eventbrites')
+            ->select('a.eventbrite_ids')
+            ->from('#__eventbrites as a')
             ->where('id='.$id);
 
         $db->setQuery($query);
 
-        $result = $db->loadResult();
-
-        return $result;
+        // set the _item property
+        $this->_item = $db->loadObject();
     }
 
+    /*
+     * Call to the eventbrite API and get the event details
+     */
 
     public function getEvent($eid)
     {
@@ -110,8 +148,14 @@ class EventbriteModelAjaxevents extends JModelItem
             return false;
         }
 
+        // return json encoded body
         return $result->body;
     }
+
+    /*
+     * Parse through the event class array
+     * Calculate the available ticket count with tickets sold - capacity
+     */
 
     public function getTicketsRemaining($ticket_classes, $capacity)
     {
@@ -148,6 +192,11 @@ class EventbriteModelAjaxevents extends JModelItem
 
         return $tickets_available;
     }
+
+    /*
+     * Get the highest and lowest ticket proce
+     * @return an object with the highest lowest as properties
+     */
 
     public function getTicketPriceRange($ticket_classes)
     {

@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die;
 
-$registry = $this->item->eventbrite_ids;
+//$registry = $this->item->eventbrite_ids;
 
 ?>
 
