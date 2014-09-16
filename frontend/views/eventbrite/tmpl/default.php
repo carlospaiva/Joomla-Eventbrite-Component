@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 <?php echo $this->item->description; ?>
 
 <h3>Tickets</h3>
-<table width="100%" id="event-list">
+<table width="100%" id="event-list" class="table table-striped table-hover">
     <tr>
         <th>Event Name</th>
         <th>Tickets Available</th>
