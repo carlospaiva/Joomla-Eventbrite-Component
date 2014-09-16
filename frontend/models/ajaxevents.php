@@ -24,29 +24,50 @@ class EventbriteModelAjaxevents extends JModelItem
 
     public function getItem()
     {
+        $eventRegistry = new JRegistry();
 
-        $eventIdList = $this->getEventBriteIds();
+        $eventRegistry->loadString($this->getEventBriteIds());
 
-        // var_dump($eventIdList);
+        $validEvent = true;
+        $eventRegistryIterator = 0;
 
-        $eventIdList = array('13146015085');
+        $eventList = array();
 
         // this will be a loop
-        foreach($eventIdList as $id)
+        while($validEvent)
         {
+            // check the key exists
+            if (! $eventRegistry[$eventRegistryIterator])
+            {
+                $validEvent = false;
+                break;
+            }
+
+            // get id from the array
+            $id = $eventRegistry[$eventRegistryIterator];
+
+            // goes to eventbrite for event details
             $eventDetails = json_decode($this->getEvent($id));
-            $ticketsRemaining = $this->getTicketsRemaining($eventDetails->ticket_classes);
-            // var_dump($ticketsRemaining);
+
+            // get our remaining tickets for this event
+            $ticketsRemaining   = $this->getTicketsRemaining($eventDetails->ticket_classes, $eventDetails->capacity);
+            $ticketPriceRange = $this->getTicketPriceRange($eventDetails->ticket_classes);
+
+            // build a new object so we can json_encode
+            $event = new stdClass();
+
+            $event->name                = $eventDetails->name->text;
+            $event->link                = $eventDetails->url;
+            $event->tickets_remaining   = $ticketsRemaining;
+            $event->capacity            = $eventDetails->capacity;
+            $event->price_range         = $ticketPriceRange;
+
+            // append object to the array
+            $eventList[] = $event;
+
+            // increment iterator
+            $eventRegistryIterator++;
         }
-
-        $event = new stdClass();
-
-        $event->name = $eventDetails->name->text;
-        $event->link = $eventDetails->url;
-        $event->tickets_remaining = $ticketsRemaining;
-
-        $eventList = array($event);
-
 
         return json_encode($eventList);
     }
@@ -92,25 +113,26 @@ class EventbriteModelAjaxevents extends JModelItem
         return $result->body;
     }
 
-    public function getTicketsRemaining($ticket_classes)
+    public function getTicketsRemaining($ticket_classes, $capacity)
     {
-        // we must have ticket classes to use this function
-        if (!$ticket_classes)
+        // we must have ticket classes and an overal capacity
+        if (!$ticket_classes || !$capacity)
         {
             return false;
         }
 
-        $quantity_total = 0;
+        // init the quantity sold to 0
         $quantity_sold  = 0;
 
 
         foreach($ticket_classes as $ticket)
         {
-            $quantity_total += $ticket->quantity_total;
+            // add all sold ticket quantities together
             $quantity_sold  += $ticket->quantity_sold;
         }
 
-        $tickets_available = $quantity_total - $quantity_sold;
+        // calculate final available tickets
+        $tickets_available = $capacity - $quantity_sold;
 
         // we should never be less than 0
         if ($tickets_available < 0)
@@ -118,9 +140,33 @@ class EventbriteModelAjaxevents extends JModelItem
             return false;
         }
 
+        // if the event is sold out lets display that instead of 0
+        if ($tickets_available === 0)
+        {
+            $tickets_available = 'SOLD OUT';
+        }
+
         return $tickets_available;
     }
 
+    public function getTicketPriceRange($ticket_classes)
+    {
+        $prices = array();
 
 
+        foreach ($ticket_classes as $ticket)
+        {
+           $prices[] = $ticket->cost->display;
+        }
+
+        // sort prices lowest to highest
+        sort($prices);
+
+        $lowestHighest = new stdClass();
+
+        $lowestHighest->lowest  = $prices[0]; // first item of array
+        $lowestHighest->highest = $prices[count($prices) - 1]; // last item of array
+
+        return $lowestHighest;
+    }
 }

@@ -16,10 +16,12 @@ $registry = $this->item->eventbrite_ids;
 <?php echo $this->item->description; ?>
 
 <h3>Tickets</h3>
-<table width="80%" id="event-list">
+<table width="100%" id="event-list">
     <tr>
         <th>Event Name</th>
         <th>Tickets Available</th>
+        <th>Price Range</th>
     </tr>
 </table>
-<img src="<?php echo JUri::root(); ?>/media/com_eventbrite/images/loader.gif" width="50px" id="loader" />
+<img src="<?php echo JUri::root(); ?>/media/com_eventbrite/images/loader.gif" width="50px" class="loader" />
+<p class="loader">Getting all available tickets for this event...hold tight!</p>

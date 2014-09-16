@@ -6,11 +6,11 @@ jQuery(document).ready(function($) {
         success: function(data) {
             table = $('#event-list');
             $.each(data, function(){
-                table.append('<tr><td><a href="' + this.link +'" target=_"blank">' + this.name + '</a></td><td>' + this.tickets_remaining +'</td></tr>');
+                table.append('<tr><td><a href="' + this.link +'" target=_"blank">' + this.name + '</a></td><td>' + this.tickets_remaining +'</td><td>' + this.price_range.lowest + ' - ' + this.price_range.highest + '</td></tr>');
                 // console.log(this);
             })
 
-            $('#loader').fadeOut();
+            $('.loader').fadeOut();
         }
     });
 });
