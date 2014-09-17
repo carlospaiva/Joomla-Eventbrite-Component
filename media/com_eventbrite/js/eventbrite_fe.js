@@ -10,14 +10,14 @@ jQuery(document).ready(function($) {
 
                 if (this.tickets_remaining == 'SOLD OUT') {
                     markup += '<td><h5>' + this.name + '</h5></td>';
-                    markup += '<td><span class="btn btn-inverse btn-small">' + this.tickets_remaining + '</span></td>';
+                    markup += '<td><span class="btn btn-inverse btn-small btn-block">' + this.tickets_remaining + '</span></td>';
                 }
                 else {
                     markup += '<td><h5><a href="' + this.link + '" target=_"blank">' + this.name + '</a></h5></td>';
-                    markup += '<td><a href="' + this.link + '" target="_blank" class="btn btn-success btn-small">' + this.tickets_remaining + ' Left - Buy Now</a></td>';
+                    markup += '<td><a href="' + this.link + '" target="_blank" class="btn btn-success btn-small btn-block">' + this.tickets_remaining + ' Left - Buy Now</a></td>';
                 }
 
-                markup += '<td>' + this.price_range.lowest + ' - ' + this.price_range.highest + '</td>';
+                markup += '<td><h5>' + this.price_range.lowest + ' - ' + this.price_range.highest + '</h5></td>';
                 markup += '</tr>';
 
                 table.append(markup);
