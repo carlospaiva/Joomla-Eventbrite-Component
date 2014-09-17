@@ -30,29 +30,17 @@ class EventbriteModelAjaxevents extends JModelItem
      */
     public function getItem()
     {
-        // create new jregistry object
-        $eventRegistry = new JRegistry();
 
-        $eventRegistry->loadString($this->getEventBriteIds());
-
-        // flag for a loop
-        $validEvent = true;
-        $eventRegistryIterator = 0;
+        $eventIdList = json_decode($this->getEventBriteIds());
 
         $eventList = array();
 
         // this will be a loop
-        while($validEvent)
+        foreach($eventIdList as $event)
         {
-            // check the key exists
-            if (! $eventRegistry[$eventRegistryIterator])
-            {
-                $validEvent = false;
-                break;
-            }
 
             // get id from the array
-            $id = $eventRegistry[$eventRegistryIterator];
+            $id = $event;
 
             // goes to eventbrite for event details
             $eventDetails = json_decode($this->getEvent($id));

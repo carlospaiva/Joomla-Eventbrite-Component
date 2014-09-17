@@ -12,6 +12,8 @@ class EventbriteModelAjaxevents extends JModelList
     */
     public $eventbriteBaseURL = 'https://www.eventbriteapi.com';
 
+    protected $_item;
+
     /*
      * Build the item list
      */
@@ -45,17 +47,26 @@ class EventbriteModelAjaxevents extends JModelList
 
     public function getEventsbyOrganizer($organizerid)
     {
-        $params = JComponentHelper::getParams('com_eventbrite');
+        $params         = JComponentHelper::getParams('com_eventbrite');
+        $personalToken  = $params->get('personal_oauth');
 
-        $personalToken = $params->get('personal_oauth');
+        // get input object
+        $input          = JFactory::getApplication()->input;
+        $search_query   = $input->getString('search', '');
+        $organizerId    = 'organizer.id=' . $organizerid;
 
-        $organizerId = 'organizer.id=' . $organizerid;
+        // build search string
+        $searchString   = $organizerId;
 
-        $getEvents = new JHttp();
+        // if there's a search query add it to the params
+        if ($search_query)
+        {
+            $searchString = '&q=' . $search_query;
+        }
 
-        $headers = array('Authorization' => 'Bearer ' . $personalToken);
-
-        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/search?' . $organizerId, $headers);
+        $getEvents  = new JHttp();
+        $headers    = array('Authorization' => 'Bearer ' . $personalToken);
+        $result     = $getEvents->get($this->eventbriteBaseURL . '/v3/events/search?' . $searchString, $headers);
 
         if ($result->code != 200)
         {
@@ -83,14 +94,45 @@ class EventbriteModelAjaxevents extends JModelList
 
         foreach($response->events as $event)
         {
-
-            $eventDetails = new stdClass;
-            $eventDetails->name = $event->name->text;
-            $eventDetails->id = $event->id;
+            $eventDetails           = new stdClass;
+            $eventDetails->name     = $event->name->text;
+            $eventDetails->id       = $event->id;
+            $eventDetails->venue    = $event->venue->name;
+            $eventDetails->url      = $event->url;
+            $eventDetails->capacity = $event->capacity;
+            $eventDetails->selected = in_array($event->id, $this->isIdSaved($event->id));
 
             $eventList[] = $eventDetails;
         }
 
         return $eventList;
+    }
+
+    protected function _getItem()
+    {
+        $app    = JFactory::getApplication();
+        $id     = $app->input->getInt('eid');
+        $db     = $this->getDbo();
+        $query  = $db->getQuery(true);
+        $query  ->select('a.eventbrite_ids')
+                ->from('#__eventbrites as a')
+                ->where('id='.$db->quote($id));
+
+        $db->setQuery($query);
+
+        $this->_item = $db->loadObject();
+        return;
+    }
+
+    public function isIdSaved($id)
+    {
+        if (! $this->_item)
+        {
+            $this->_getItem();
+        }
+
+        $idList = json_decode($this->_item->eventbrite_ids);
+
+        return $idList;
     }
 }

@@ -132,16 +132,16 @@ class EventbriteModelEventbrite extends JModelAdmin
 
     public function save($data)
     {
+
         /*
          * To be able to save data as a string
          * we need to load into JRegistry first
          */
         if (isset($data['eventbrite_ids']))
         {
-            $evenbriteIds = new JRegistry;
-            $evenbriteIds->loadArray($data['eventbrite_ids']);
+            $eventbriteIds = json_encode($data['eventbrite_ids']);
 
-            $data['eventbrite_ids'] = (string) $evenbriteIds;
+            $data['eventbrite_ids'] = (string) $eventbriteIds;
         }
 
         parent::save($data);
