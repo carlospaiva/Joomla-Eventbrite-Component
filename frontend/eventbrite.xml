@@ -9,7 +9,12 @@
     <description>eventbrite component for Joomla 3</description>
 
     <files folder="frontend">
-
+        <folder>language</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+        <filename>controller.php</filename>
+        <filename>eventbrite.php</filename>
+        <filename>eventbrite.xml</filename>
     </files>
 
     <administration>
@@ -22,5 +27,10 @@
             <folder>views</folder>
             <folder>tables</folder>
         </files>
+        <languages>
+            <language tag="en-GB">language/en-GB/en-GB.com_eventbrite.ini</language>
+            <language tag="en-GB">language/en-GB/en-GB.com_eventbrite.sys.ini</language>
+        </languages>
     </administration>
+
 </extension>
