@@ -45,4 +45,23 @@
                default=""
                />
     </fieldset>
+
+    <fieldset
+        name="descriptions"
+        label="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_DESCRIPTIONS_LABEL"
+        description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_DESCRIPTIONS_DESC">
+
+        <field name="pretext"
+               type="editor"
+               label="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_PRETEXT_LABEL"
+               description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_PRETEXT_DESC"
+        />
+
+        <field name="posttext"
+               type="editor"
+               label="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_POSTTEXT_LABEL"
+               description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_POSTTEXT_DESC"
+        />
+
+    </fieldset>
 </config>
