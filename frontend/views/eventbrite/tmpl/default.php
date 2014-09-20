@@ -7,21 +7,25 @@
 
 defined('_JEXEC') or die;
 
-//$registry = $this->item->eventbrite_ids;
-
 ?>
 
 <h3><?php echo $this->item->title; ?></h3>
 
 <?php echo $this->item->description; ?>
 
-<h3>Tickets</h3>
+<h3><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TICKETS_HEADER'); ?></h3>
 <table width="100%" id="event-list" class="table table-striped table-hover">
     <tr>
-        <th>Event Name</th>
-        <th>Tickets Available</th>
-        <th>Price Range</th>
+        <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_EVENT_NAME'); ?></th>
+        <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_TICKETS_AVAILABLE'); ?></th>
+        <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_PRICE_RANGE'); ?></th>
     </tr>
 </table>
 <img src="<?php echo JUri::root(); ?>/media/com_eventbrite/images/loader.gif" width="50px" class="loader" />
-<p class="loader">Getting all available tickets for this event...hold tight!</p>
+<p class="loader"><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_LOADER_TEXT'); ?></p>
+
+<input type="hidden" value="<?php echo $this->item->id; ?>" name="id" id="eid" />
+
+<a href="<?php echo JRoute::_('index.php?option=com_eventbrite&view=eventbrites'); ?>" class="btn btn-primary">
+    <?php echo JText::_('COM_EVENTBRITE_BACK_TO_LIST'); ?>
+</a>

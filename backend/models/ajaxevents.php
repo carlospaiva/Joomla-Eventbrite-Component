@@ -50,6 +50,12 @@ class EventbriteModelAjaxevents extends JModelList
         $params         = JComponentHelper::getParams('com_eventbrite');
         $personalToken  = $params->get('personal_oauth');
 
+        // we must have a token to
+        if (! $personalToken)
+        {
+            return false;
+        }
+
         // get input object
         $input          = JFactory::getApplication()->input;
         $search_query   = $input->getString('search', '');
@@ -61,7 +67,8 @@ class EventbriteModelAjaxevents extends JModelList
         // if there's a search query add it to the params
         if ($search_query)
         {
-            $searchString = '&q=' . $search_query;
+            // append search param
+            $searchString .= '&q=' . $search_query;
         }
 
         $getEvents  = new JHttp();
@@ -100,7 +107,7 @@ class EventbriteModelAjaxevents extends JModelList
             $eventDetails->venue    = $event->venue->name;
             $eventDetails->url      = $event->url;
             $eventDetails->capacity = $event->capacity;
-            $eventDetails->selected = in_array($event->id, $this->isIdSaved($event->id));
+            $eventDetails->selected = in_array($event->id, $this->isIdSaved());
 
             $eventList[] = $eventDetails;
         }
@@ -124,14 +131,28 @@ class EventbriteModelAjaxevents extends JModelList
         return;
     }
 
-    public function isIdSaved($id)
+    /*
+     * Will always return an array. Might be empty if there
+     * aren't any saved events
+     */
+
+    public function isIdSaved()
     {
+        // set up an empty array
+        $idList = array();
+
         if (! $this->_item)
         {
             $this->_getItem();
         }
 
-        $idList = json_decode($this->_item->eventbrite_ids);
+        $savedIds = json_decode($this->_item->eventbrite_ids);
+
+        if ($savedIds)
+        {
+            // update array
+            $idList = $savedIds;
+        }
 
         return $idList;
     }

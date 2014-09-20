@@ -1,7 +1,7 @@
 <config>
     <fieldset
             name="eventbrite"
-            label="JGLOBAL_ARTICLES"
+            label="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_LABEL"
             description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_DESC">
 
         <field  name="client_secret"

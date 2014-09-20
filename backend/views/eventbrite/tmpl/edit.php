@@ -39,34 +39,29 @@ $input = $app->input;
                             <?php echo $this->form->getInput('description'); ?>
                         </fieldset>
                         <div class="clearfix"></div>
-                        <h3>Ticket List</h3>
+                        <h3><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TICKETS_HEADER'); ?></h3>
 
                         <div class="control-group">
-                            <input class="search-events" type="text" class="input-small" placeholder="Enter search" />
+                            <input class="search-events" type="text" class="input-small" placeholder="<?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_EVENT_SEARCH_TEXT'); ?>" />
                             <input type="button" class="btn btn-small" value="Go" id="submit-search" />
                             <img src="<?php echo JUri::root(); ?>/media/com_eventbrite/images/loader.gif" width="50px" class="loader" />
                         </div>
                         <table id="event-list" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Event Name</th>
-                                    <th>Venue Name</th>
-                                    <th>EventID</th>
-                                    <th><a href="javascript:void(0)" id="select">Select</a> / <a href="javascript:void(0);" id="deselect">Deselect</a></th>
-                                    <th>Link</th>
+                                    <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_EVENT_NAME');?></th>
+                                    <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_VENUE_NAME');?></th>
+                                    <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_EVENT_ID');?></th>
+                                    <th><a href="javascript:void(0)" id="select"><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_SELECT'); ?></a> / <a href="javascript:void(0);" id="deselect"><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_DESELECT'); ?></a></th>
+                                    <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_LINK'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
-
-
                     </div>
                     <div class="span3">
                         <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
-
-                        <?php // echo $this->form->getInput('eventbrite_ids'); ?>
                     </div>
                 </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>

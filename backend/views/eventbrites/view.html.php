@@ -61,7 +61,7 @@ class EventbriteViewEventbrites extends JViewLegacy
         // Get the toolbar object instance
         $bar = JToolBar::getInstance('toolbar');
 
-        JToolbarHelper::title(JText::_('COM_CONTENT_ARTICLES_TITLE'), 'stack article');
+        JToolbarHelper::title(JText::_('COM_EVENTBRITE_EVENT_LIST'), 'stack article');
 
 
         // all our buttons

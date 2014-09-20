@@ -61,10 +61,10 @@ class EventbriteModelEventbrite extends JModelItem
             // get the item
             $db     = $this->getDbo();
             $query  = $db->getQuery(true)
-                    ->select('a.title, a.alias, a.description, a.eventbrite_ids')
+                    ->select('a.title, a.alias, a.description, a.eventbrite_ids, a.id')
                     ->from('#__eventbrites as a')
-                    ->where('id=' . $pk)
-                    ->where('published=' . 1);
+                    ->where('a.id=' . $db->quote($pk))
+                    ->where('a.published=' . 1);
 
             $db->setQuery($query);
 
