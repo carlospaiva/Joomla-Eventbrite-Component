@@ -48,6 +48,9 @@ jQuery(document).ready(function($) {
                 // console.log($("#jform_eventbrite_ids_chzn").trigger("liszt:updated"));
                 $("#jform_eventbrite_ids").trigger("liszt:updated");
                 $('.loader').fadeOut();
+            },
+            error: function(data) {
+                $('#event-list').append('<div class="alert alert-error">There was an error getting the events</div>');
             }
         });
     }

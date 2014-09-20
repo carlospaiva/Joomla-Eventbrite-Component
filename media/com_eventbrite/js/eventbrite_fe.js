@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
     $.ajax({
-        url: 'index.php?option=com_eventbrite&view=ajaxevents&format=raw&eid=1',
+        url: 'index.php?option=com_eventbrite&view=ajaxevents&format=raw&eid=' + $('#eid').val(),
         type: "GET",
         dataType: "json",
         success: function(data) {
@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
                 }
                 else {
                     markup += '<td><h5><a href="' + this.link + '" target=_"blank">' + this.name + '</a></h5></td>';
-                    markup += '<td><a href="' + this.link + '" target="_blank" class="btn btn-success btn-small btn-block">' + this.tickets_remaining + ' Left - Buy Now</a></td>';
+                    markup += '<td><a href="' + this.link + '" target="_blank" class="btn btn-success btn-small btn-block">' + ticketLabel(this.tickets_remaining) + ' - Buy Now</a></td>';
                 }
 
                 markup += '<td><h5>' + this.price_range.lowest + ' - ' + this.price_range.highest + '</h5></td>';
@@ -22,9 +22,24 @@ jQuery(document).ready(function($) {
 
                 table.append(markup);
                 // console.log(this);
-            })
+            });
+            // hide the loader
+            hideLoader();
+        },
+        error: function(data) {
+            $('#event-list').after('<div class="alert alert-error">There was an error getting events. Please notify the Seneca Lake Wine Trail! <br />' + data.status + ' ' + data.statusText + '</div>');
 
-            $('.loader').fadeOut();
+            // hide the loader
+            hideLoader();
         }
     });
+
+    function hideLoader() {
+        $('.loader').fadeOut();
+    }
+
+    function ticketLabel(ticketCount)
+    {
+        return '<span class="badge">' + ticketCount + ' Left</span>';
+    }
 });
