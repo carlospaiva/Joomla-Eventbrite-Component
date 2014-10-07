@@ -62,9 +62,6 @@ class EventbriteModelAjaxevents extends JModelItem
 
             // append object to the array
             $eventList[] = $event;
-
-            // increment iterator
-            $eventRegistryIterator++;
         }
 
         // return array of all events as a json string
