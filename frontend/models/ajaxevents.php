@@ -172,7 +172,7 @@ class EventbriteModelAjaxevents extends JModelItem
         // if the event is sold out lets display that instead of 0
         if ($tickets_available === 0)
         {
-            $tickets_available = 'SOLD OUT';
+            $tickets_available = 'UNAVAILABLE';
         }
 
         return $tickets_available;

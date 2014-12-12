@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
             $.each(data, function(){
                var markup = '<tr>';
 
-                if (this.tickets_remaining == 'SOLD OUT') {
+                if (this.tickets_remaining == 'UNAVAILABLE') { 
                     markup += '<td><h5>' + this.name + '</h5></td>';
                     markup += '<td><span class="btn btn-inverse btn-small btn-block">' + this.tickets_remaining + '</span></td>';
                 }

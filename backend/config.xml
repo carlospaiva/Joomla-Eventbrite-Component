@@ -55,12 +55,14 @@
                type="editor"
                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_PRETEXT_LABEL"
                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_PRETEXT_DESC"
+               filter="safehtml"
         />
 
         <field name="posttext"
                type="editor"
                label="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_POSTTEXT_LABEL"
                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_SETTINGS_POSTTEXT_DESC"
+               filter="safehtml"
         />
 
     </fieldset>
