@@ -12,6 +12,8 @@ class EventbriteModelAjaxevents extends JModelList
     */
     public $eventbriteBaseURL = 'https://www.eventbriteapi.com';
 
+    private $organizer_id;
+
     protected $_item;
 
     /*
@@ -23,9 +25,9 @@ class EventbriteModelAjaxevents extends JModelList
         $params = JComponentHelper::getParams('com_eventbrite');
 
         // our organizer id
-        $organizerid = $params->get('organizer_id');
+        $this->organizer_id = $params->get('organizer_id');
 
-        $events = $this->getEventsbyOrganizer($organizerid);
+        $events = $this->getEventsbyOrganizer();
 
         // no events so return false
         if(!$events)
@@ -34,6 +36,8 @@ class EventbriteModelAjaxevents extends JModelList
         }
 
         $response = json_decode($events->body);
+
+        $response = $this->getPaginatedEvents($response);
 
         $eventList = $this->buildEventObjects($response);
 
@@ -45,10 +49,15 @@ class EventbriteModelAjaxevents extends JModelList
      * query is search by organizer id
      */
 
-    public function getEventsbyOrganizer($organizerid)
+    public function getEventsbyOrganizer($page = 1)
     {
         $params         = JComponentHelper::getParams('com_eventbrite');
         $personalToken  = $params->get('personal_oauth');
+
+        if (! $this->organizer_id)
+        {
+            return false;
+        }
 
         // we must have a token to
         if (! $personalToken)
@@ -59,7 +68,7 @@ class EventbriteModelAjaxevents extends JModelList
         // get input object
         $input          = JFactory::getApplication()->input;
         $search_query   = $input->getString('search', '');
-        $organizerId    = 'organizer.id=' . $organizerid;
+        $organizerId    = 'organizer.id=' . $this->organizer_id;
 
         // build search string
         $searchString   = $organizerId;
@@ -71,9 +80,13 @@ class EventbriteModelAjaxevents extends JModelList
             $searchString .= '&q=' . $search_query;
         }
 
+        // add pagination
+        $searchString .= '&page=' . $page;
+
         $getEvents  = new JHttp();
         $headers    = array('Authorization' => 'Bearer ' . $personalToken);
         $result     = $getEvents->get($this->eventbriteBaseURL . '/v3/events/search?' . $searchString, $headers);
+
 
         if ($result->code != 200)
         {
@@ -113,6 +126,40 @@ class EventbriteModelAjaxevents extends JModelList
         }
 
         return $eventList;
+    }
+
+    public function getPaginatedEvents($response)
+    {
+        if ($response->pagination->page_count <= 1)
+        {
+            return $response;
+        }
+        // we had more than one page so let's get the rest of them.
+
+        // hang on to our total number of pages.
+        $page_count = $response->pagination->page_count;
+
+        // and get all our current events
+        $combinedEventsList = $response->events;
+
+        // we start at page 2 because we don't even get here unless we 2+ pages
+        for ($page_iterator = 2; $page_iterator <= $page_count; $page_iterator++)
+        {
+            $nextPage = $this->getEventsbyOrganizer($page_iterator);
+
+            $nextPage = json_decode($nextPage->body);
+
+            if ($nextPage->events)
+            {
+                $combinedEventsList = array_merge($combinedEventsList, $nextPage->events);
+            }
+        }
+
+        // update the original response body
+        $response->events = $combinedEventsList;
+
+        return $response;
+
     }
 
     protected function _getItem()
