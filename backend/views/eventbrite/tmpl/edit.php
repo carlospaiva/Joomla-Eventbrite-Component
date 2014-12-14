@@ -53,6 +53,7 @@ $input = $app->input;
                                     <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_VENUE_NAME');?></th>
                                     <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_EVENT_ID');?></th>
                                     <th><a href="javascript:void(0)" id="select"><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_SELECT'); ?></a> / <a href="javascript:void(0);" id="deselect"><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_DESELECT'); ?></a></th>
+                                    <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_ORDERING'); ?></th>
                                     <th><?php echo JText::_('COM_EVENTBRITE_ITEM_EDIT_TABLE_HEADER_LINK'); ?></th>
                                 </tr>
                             </thead>

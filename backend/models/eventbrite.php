@@ -144,6 +144,27 @@ class EventbriteModelEventbrite extends JModelAdmin
             $data['eventbrite_ids'] = (string) $eventbriteIds;
         }
 
+
+
+        if (isset($data['eventbrite_ids_order']))
+        {
+
+            $orderedEvents = array();
+
+            foreach($data['eventbrite_ids_order'] as $itemOrder)
+            {
+                if ($itemOrder > 0)
+                {
+                    $orderedEvents[] = $itemOrder;
+                }
+            }
+
+            $eventbriteIdsOrdering = json_encode($orderedEvents);
+
+            $data['eventbrite_ids_order'] = (string) $eventbriteIdsOrdering;
+        }
+
+
         parent::save($data);
 
         return true;

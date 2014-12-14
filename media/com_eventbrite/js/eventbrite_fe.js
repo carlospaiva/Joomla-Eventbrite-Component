@@ -22,6 +22,9 @@ jQuery(document).ready(function($) {
 
                 table.append(markup);
                 // console.log(this);
+
+                // once we're done update the auto height library
+                $.fn.matchHeight._update()
             });
             // hide the loader
             hideLoader();

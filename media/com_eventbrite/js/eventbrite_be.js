@@ -39,6 +39,7 @@ jQuery(document).ready(function($) {
                     markup += '<td>' + this.venue + '</td>';
                     markup += '<td>' + this.id +'</td>';
                     markup += '<td>' + '<input type="checkbox" value="' + this.id +'" name="jform[eventbrite_ids][]" ' + selected + ' class="event-select" />' + '</td>';
+                    markup += '<td>' + '<input type="text" value="' + this.order +'" name="jform[eventbrite_ids_order][]" ' + ' class="event-select" />' + '</td>';
                     markup += '<td>' + '<a href="' + this.url + '" target="_blank"><i class="icon-home-2"></i>' + '</a></td>'
                     markup += '</tr>';
 

@@ -19,6 +19,8 @@ class EventbriteModelAjaxevents extends JModelItem
 {
 
     protected $_item;
+
+    protected $eventIdList;
     /*
     * Eventbrite base URL
     */
@@ -31,12 +33,12 @@ class EventbriteModelAjaxevents extends JModelItem
     public function getItem()
     {
 
-        $eventIdList = json_decode($this->getEventBriteIds());
+        $this->eventIdList = json_decode($this->getEventBriteIds());
 
         $eventList = array();
 
         // this will be a loop
-        foreach($eventIdList as $event)
+        foreach($this->eventIdList as $event)
         {
 
             // get id from the array
@@ -59,14 +61,48 @@ class EventbriteModelAjaxevents extends JModelItem
             $event->tickets_remaining   = $ticketsRemaining;
             $event->capacity            = $eventDetails->capacity;
             $event->price_range         = $ticketPriceRange;
+            $event->order               = $this->getItemOrder($id);
 
             // append object to the array
             $eventList[] = $event;
         }
 
+        usort($eventList, array('EventbriteModelAjaxevents', 'compareListItemOrder'));
+
         // return array of all events as a json string
         return json_encode($eventList);
     }
+
+    public function getItemOrder($item_id)
+    {
+
+        $itemorder = json_decode($this->_item->eventbrite_ids_order);
+
+        $count = 0;
+        foreach ($this->eventIdList as $id)
+        {
+            if ($id == $item_id)
+            {
+                return $itemorder[$count];
+            }
+            $count++;
+        }
+
+        return 0;
+
+    }
+
+
+    /*
+     * Compare list item order
+     */
+
+    public function compareListItemOrder($a, $b)
+    {
+        return $a->order > $b->order;
+
+    }
+
 
     /*
      * Get the eventbrite id list from the _item property
@@ -101,7 +137,7 @@ class EventbriteModelAjaxevents extends JModelItem
 
         $db = $this->getDbo();
         $query = $db->getQuery(true)
-            ->select('a.eventbrite_ids')
+            ->select('a.eventbrite_ids, a.eventbrite_ids_order')
             ->from('#__eventbrites as a')
             ->where('id='.$id);
 
@@ -202,5 +238,31 @@ class EventbriteModelAjaxevents extends JModelItem
         $lowestHighest->highest = $prices[count($prices) - 1]; // last item of array
 
         return $lowestHighest;
+    }
+
+    /*
+     * Will always return an array. Might be empty if there
+     * aren't any saved events
+     */
+
+    public function isIdSaved()
+    {
+        // set up an empty array
+        $idList = array();
+
+        if (! $this->_item)
+        {
+            $this->_getItem();
+        }
+
+        $savedIds = json_decode($this->_item->eventbrite_ids);
+
+        if ($savedIds)
+        {
+            // update array
+            $idList = $savedIds;
+        }
+
+        return $idList;
     }
 }

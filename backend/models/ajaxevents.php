@@ -121,11 +121,49 @@ class EventbriteModelAjaxevents extends JModelList
             $eventDetails->url      = $event->url;
             $eventDetails->capacity = $event->capacity;
             $eventDetails->selected = in_array($event->id, $this->isIdSaved());
+            $eventDetails->order    = $this->getItemOrder($event->id, $this->isIdSaved());
 
             $eventList[] = $eventDetails;
         }
 
+        // sort our array of objects
+        usort($eventList, array('EventbriteModelAjaxevents', 'compareListItemOrder'));
+
         return $eventList;
+    }
+
+    public function compareListItemOrder($a, $b)
+    {
+        return $a->order > $b->order;
+
+    }
+
+
+
+    public function getItemOrder($item_id, $savedIDList)
+    {
+        if (! $this->_item)
+        {
+            $this->_getItem();
+        }
+
+        if (in_array($item_id, $savedIDList))
+        {
+            $itemorder = json_decode($this->_item->eventbrite_ids_order);
+
+            $count = 0;
+            foreach ($savedIDList as $savedId)
+            {
+                if ($savedId == $item_id)
+                {
+                    return $itemorder[$count];
+                }
+                $count++;
+            }
+        }
+
+        return 0;
+
     }
 
     public function getPaginatedEvents($response)
@@ -168,7 +206,7 @@ class EventbriteModelAjaxevents extends JModelList
         $id     = $app->input->getInt('eid');
         $db     = $this->getDbo();
         $query  = $db->getQuery(true);
-        $query  ->select('a.eventbrite_ids')
+        $query  ->select('a.eventbrite_ids, a.eventbrite_ids_order')
                 ->from('#__eventbrites as a')
                 ->where('id='.$db->quote($id));
 
