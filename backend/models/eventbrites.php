@@ -44,8 +44,11 @@ class EventbriteModelEventbrites extends JModelList
         $user   = JFactory::getUser();
         $app    = JFactory::getApplication();
 
-        $query->select('a.id, a.title, a.alias, a.description, a.published');
+        $query->select('a.id, a.title, a.alias, a.description, a.published, a.event_date, a.cat_id');
+        $query->select('b.id as category_id, b.title as category_name');
+        $query->leftJoin('#__categories as b ON a.cat_id=b.id');
         $query->from('#__eventbrites as a');
+        $query->order('a.event_date ASC');
 
         return $query;
     }

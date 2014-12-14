@@ -34,5 +34,26 @@
 
     <field name="eventbrite_ids" type="list" label="COM_EVENTBRITE_FIELD_EVENTBRITE_IDS_LABEL"
            description="COM_EVENTBRITE_FIELD_EVENTBRITE_IDS_DESC"   placeholder="Loading..." multiple="true">
+
+
     </field>
+
+    <field name="cat_id" type="category"
+           label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
+           show_root="false"
+           required="true"
+           multiple="false"
+           extension="com_eventbrite" />
+
+    <field name="cat_id" type="category"
+           label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
+           show_root="false"
+           required="true"
+           multiple="false"
+           extension="com_eventbrite" />
+
+    <field name="event_date" type="calendar" label="COM_EVENTBRITE_FIELD_CREATED_LABEL"
+           description="COM_EVENTBRITE_FIELD_CREATED_DESC" size="22"
+           format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
+
 </form>

@@ -63,6 +63,8 @@ class EventbriteViewEventbrites extends JViewLegacy
 
         JToolbarHelper::title(JText::_('COM_EVENTBRITE_EVENT_LIST'), 'stack article');
 
+        EventbriteHelper::addSubmenu('eventbrites');
+
 
         // all our buttons
         JToolbarHelper::addNew('eventbrite.add');
@@ -75,5 +77,7 @@ class EventbriteViewEventbrites extends JViewLegacy
         // pref pane
         JToolbarHelper::preferences('com_eventbrite');
     }
+
+
 
 }

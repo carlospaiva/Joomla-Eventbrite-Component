@@ -62,6 +62,11 @@ $input = $app->input;
                     </div>
                     <div class="span3">
                         <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+                        <?php echo $this->form->getLabel('cat_id'); ?>
+                        <?php echo $this->form->getInput('cat_id'); ?>
+
+                        <?php echo $this->form->getLabel('event_date'); ?>
+                        <?php echo $this->form->getInput('event_date'); ?>
                     </div>
                 </div>
             <?php echo JHtml::_('bootstrap.endTab'); ?>

@@ -15,6 +15,11 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_eventbrite'))
     throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
+// load helper
+JLoader::register('EventbriteHelper', __DIR__ . '/helpers/eventbrite.php');
+
+
+
 $controller	= JControllerLegacy::getInstance('Eventbrite');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

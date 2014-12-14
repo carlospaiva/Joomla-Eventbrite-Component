@@ -47,6 +47,7 @@ class EventbriteModelEventbrites extends JModelList
         $query->select('a.id, a.title, a.alias, a.description, a.published, a.eventbrite_ids');
         $query->from('#__eventbrites as a');
         $query->where('a.published=' . 1);
+        $query->order('a.event_date ASC');
 
         return $query;
     }

@@ -64,6 +64,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                     <th>
                         <?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
                     </th>
+                    <th>
+                        <?php echo JText::_('COM_EVENTBRITE_EVENT_DATE'); ?>
+                    </th>
+                    <th>
+                        <?php echo JText::_('COM_EVENTBRITE_CATEGORY_TITLE'); ?>
+                    </th>
                     <th width="1%" class="nowrap hidden-phone">
                         <?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
                     </th>
@@ -87,6 +93,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                             <span class="small">
                                 <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                             </span>
+                        </td>
+                        <td>
+                            <?php echo $item->event_date; ?>
+                        </td>
+                        <td>
+                            <?php echo $item->category_name; ?>
                         </td>
                         <td class="center hidden-phone">
                             <?php echo (int) $item->id; ?>

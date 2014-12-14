@@ -69,24 +69,24 @@ class EventbriteModelAjaxevents extends JModelList
         $input          = JFactory::getApplication()->input;
         $search_query   = $input->getString('search', '');
         $organizerId    = 'organizer.id=' . $this->organizer_id;
+        $userId         = $params->get('user_id');
 
         // build search string
-        $searchString   = $organizerId;
+        //$searchString   = $organizerId;
 
         // if there's a search query add it to the params
         if ($search_query)
         {
             // append search param
-            $searchString .= '&q=' . $search_query;
+            // $searchString .= '&q=' . $search_query;
         }
 
         // add pagination
-        $searchString .= '&page=' . $page;
+        $searchString = '&page=' . $page;
 
         $getEvents  = new JHttp();
-        $headers    = array('Authorization' => 'Bearer ' . $personalToken);
-        $result     = $getEvents->get($this->eventbriteBaseURL . '/v3/events/search?' . $searchString, $headers);
-
+        $headers    = array('Authorization' => 'Bearer ' . $personalToken, 'status' => 'live');
+        $result     = $getEvents->get($this->eventbriteBaseURL . '/v3/users/' . $userId . '/owned_events/?status=live' . $searchString, $headers);
 
         if ($result->code != 200)
         {

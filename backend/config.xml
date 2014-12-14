@@ -44,6 +44,13 @@
                description="COM_EVENTBRITE_CONFIG_EVENTBRITE_ORGANIZER_ID_DESC"
                default=""
                />
+
+        <field name="user_id"
+               type="text"
+               label="COM_EVENTBRITE_CONFIG_EVENTBRITE_USER_ID_LABEL"
+               description="COM_EVENTBRITE_CONFIG_EVENTBRITE_USER_ID_DESC"
+               default=""
+                />
     </fieldset>
 
     <fieldset
