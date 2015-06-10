@@ -221,6 +221,10 @@ class EventbriteModelAjaxevents extends JModelItem
 
     public function getTicketPriceRange($ticket_classes)
     {
+        if (!count($ticket_classes)) {
+            return '';
+        }
+
         $prices = array();
 
 
