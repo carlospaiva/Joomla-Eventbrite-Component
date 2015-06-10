@@ -39,7 +39,7 @@ class EventbriteViewEventbrite extends JViewLegacy
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
-
+        JHtml::_('jquery.framework');
         JHtml::script('media/jui/js/chosen.jquery.min.js', true);
         JHtml::script(JUri::root() . 'media/com_eventbrite/js/eventbrite_be.js', true);
 
