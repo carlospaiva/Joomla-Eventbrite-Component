@@ -47,11 +47,13 @@ class EventbriteModelAjaxevents extends JModelItem
             // goes to eventbrite for event details
             $eventDetails = json_decode($this->getEvent($id));
 
+            $ticketClass = json_decode($this->getEventTickets($id));
+
             // get our remaining tickets for this event
-            $ticketsRemaining   = $this->getTicketsRemaining($eventDetails->ticket_classes, $eventDetails->capacity);
+            $ticketsRemaining   = $this->getTicketsRemaining($ticketClass->ticket_classes, $eventDetails->capacity);
 
             // get highest lowest price range
-            $ticketPriceRange = $this->getTicketPriceRange($eventDetails->ticket_classes);
+            $ticketPriceRange = $this->getTicketPriceRange($ticketClass->ticket_classes);
 
             // build a new object so we can json_encode
             $event = new stdClass();
@@ -161,13 +163,23 @@ class EventbriteModelAjaxevents extends JModelItem
 
         $headers = array('Authorization' => 'Bearer ' . $personalToken);
 
-        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid ,  $headers);
+        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid . '?expand=venue' ,  $headers);
 
-        if ($result->code != 200)
-        {
-            // there was an error
-            return false;
-        }
+        // return json encoded body
+        return $result->body;
+    }
+
+    public function getEventTickets($eid)
+    {
+        $params = JComponentHelper::getParams('com_eventbrite');
+
+        $personalToken = $params->get('personal_oauth');
+
+        $getEvents = new JHttp();
+
+        $headers = array('Authorization' => 'Bearer ' . $personalToken);
+
+        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid . '/ticket_classes' ,  $headers);
 
         // return json encoded body
         return $result->body;
@@ -181,14 +193,13 @@ class EventbriteModelAjaxevents extends JModelItem
     public function getTicketsRemaining($ticket_classes, $capacity)
     {
         // we must have ticket classes and an overal capacity
-        if (!$ticket_classes || !$capacity)
+        if (! is_array($ticket_classes) || !$capacity)
         {
-            return false;
+            return '';
         }
 
         // init the quantity sold to 0
         $quantity_sold  = 0;
-
 
         foreach($ticket_classes as $ticket)
         {
