@@ -47,13 +47,13 @@ class EventbriteModelAjaxevents extends JModelItem
             // goes to eventbrite for event details
             $eventDetails = json_decode($this->getEvent($id));
 
-            $ticketClass = json_decode($this->getEventTickets($id));
+            //$ticketClass = json_decode($this->getEventTickets($id));
 
             // get our remaining tickets for this event
-            $ticketsRemaining   = $this->getTicketsRemaining($ticketClass->ticket_classes, $eventDetails->capacity);
+            $ticketsRemaining   = $this->getTicketsRemaining($eventDetails->ticket_classes, $eventDetails->capacity);
 
             // get highest lowest price range
-            $ticketPriceRange = $this->getTicketPriceRange($ticketClass->ticket_classes);
+            $ticketPriceRange = $this->getTicketPriceRange($eventDetails->ticket_classes);
 
             // build a new object so we can json_encode
             $event = new stdClass();
@@ -163,7 +163,7 @@ class EventbriteModelAjaxevents extends JModelItem
 
         $headers = array('Authorization' => 'Bearer ' . $personalToken);
 
-        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid . '?expand=venue' ,  $headers);
+        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid . '?expand=venue,ticket_classes' ,  $headers);
 
         // return json encoded body
         return $result->body;
