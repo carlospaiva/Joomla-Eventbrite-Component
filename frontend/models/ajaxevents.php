@@ -161,12 +161,21 @@ class EventbriteModelAjaxevents extends JModelItem
 
         $getEvents = new JHttp();
 
-        $headers = array('Authorization' => 'Bearer ' . $personalToken);
+        $url = $this->eventbriteBaseURL . '/v3/events/' . $eid . '/?expand=venue,ticket_classes';
 
-        $result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid . '?expand=venue,ticket_classes' ,  $headers);
+        // uses jhttp which was not acting properly
+        //$result = $getEvents->get($this->eventbriteBaseURL . '/v3/events/' . $eid . '?expand=venue,ticket_classes' ,  $headers);
+
+        $ch = curl_init();
+        $newheader = array('Authorization: Bearer ' . $personalToken);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $newheader);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $chresult    = curl_exec($ch);
+        curl_close($ch);
 
         // return json encoded body
-        return $result->body;
+        return $chresult;
     }
 
     public function getEventTickets($eid)
